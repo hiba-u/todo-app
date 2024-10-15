@@ -32,3 +32,10 @@ todos.forEach(function(todo){
     document.body.appendChild(p)
     
 })
+
+document.querySelector('#add-todo').addEventListener('input', function(e){
+    const p = document.createElement('p')
+    p.textContent = e.target.value
+
+    document.body.appendChild(p)
+})
