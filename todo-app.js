@@ -19,7 +19,12 @@ document.querySelector('#todo-form').addEventListener('submit', function(e){
     e.preventDefault()
     
     todoText = e.target.elements.addTodo.value
-    todos.push({text: todoText, completed: false})
+    todos.push(
+        {
+        id: uuidv4(),
+        text: todoText, 
+        completed: false
+    })
 
     saveTodos(todos)
 

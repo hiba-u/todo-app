@@ -43,11 +43,40 @@ const renderTodos = function(todos, filters, hideCompleted){
     }
 }
 
+// Remove a todo
+const removeTodo = function(id){
+
+    const index = todos.findIndex(function(todo){
+        return todo.id === id
+    })
+
+    if(index > -1){
+        todos.splice(index, 1)
+    }
+}
+
 // Generate dom structure for todo
 const generateTodoDOM = function(todo){
 
-    const todoEl = document.createElement('p')
-    todoEl.textContent = todo.text
+    const todoEl = document.createElement('div')
+    const textEl = document.createElement('span')
+    const chkEl = document.createElement('input')
+    const btnEl = document.createElement('button')
+
+    chkEl.setAttribute('type', 'checkbox')
+    todoEl.appendChild(chkEl)
+
+    textEl.textContent = todo.text
+    todoEl.appendChild(textEl)
+
+    // Remove todo button
+    btnEl.textContent = 'X'
+    todoEl.appendChild(btnEl)
+    btnEl.addEventListener('click', function(){
+        removeTodo(todo.id)
+        saveTodos(todos)
+        renderTodos(todos, filters)
+    })
         
     document.querySelector('#todos').appendChild(todoEl)
 }
