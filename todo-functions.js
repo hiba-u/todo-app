@@ -55,6 +55,17 @@ const removeTodo = function(id){
     }
 }
 
+// Toggle a todo
+const toggleTodo = function(id, isChecked){
+    const updateTodo = todos.find(function(todo){
+        return todo.id === id
+    })
+
+    if(updateTodo !== undefined){
+        updateTodo.completed = isChecked
+    }
+}
+
 // Generate dom structure for todo
 const generateTodoDOM = function(todo){
 
@@ -63,9 +74,17 @@ const generateTodoDOM = function(todo){
     const chkEl = document.createElement('input')
     const btnEl = document.createElement('button')
 
+    // Checkbox
     chkEl.setAttribute('type', 'checkbox')
+    chkEl.checked = todo.completed
     todoEl.appendChild(chkEl)
+    chkEl.addEventListener('change', function(e){
+        toggleTodo(todo.id, e.target.checked)
+        saveTodos(todos)
+        renderTodos(todos, filters)
+    })
 
+    // Todo text
     textEl.textContent = todo.text
     todoEl.appendChild(textEl)
 
