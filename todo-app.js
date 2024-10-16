@@ -1,23 +1,15 @@
-const todos = [{
-    text: 'Buy cat food',
-    completed: false
-}, {
-    text: 'Clean the kitchen',
-    completed: true
-}, {
-    text: 'Buy food',
-    completed: false
-}, {
-    text: 'Exercise',
-    completed: false
-}, {
-    text: 'JS course',
-    completed: false
-}]
+let todos = []
 
 const filters = {
     searchText: '',
     hideCompleted: false
+}
+
+// Check for existing todos data
+const todosJSON = localStorage.getItem('todos')
+
+if(todosJSON !== null){
+    todos = JSON.parse(todosJSON)
 }
 
 const renderTodos = function(todos, filters, hideCompleted){
@@ -60,24 +52,28 @@ const renderTodos = function(todos, filters, hideCompleted){
 
 renderTodos(todos, filters)
 
+// Filter todos by text
 document.querySelector('#search-todo').addEventListener('input', function(e){
     filters.searchText = e.target.value
 
     renderTodos(todos, filters)
 })
 
-// Add todo
+// Add a new todo
 document.querySelector('#todo-form').addEventListener('submit', function(e){
     e.preventDefault()
     
     todoText = e.target.elements.addTodo.value
     todos.push({text: todoText, completed: false})
 
+    localStorage.setItem('todos', JSON.stringify(todos))
+
     renderTodos(todos, filters)
 
     e.target.elements.addTodo.value = ''
 })
 
+// Hide the completed todos
 document.querySelector('#hide-completed').addEventListener('change', function(e){
     filters.hideCompleted = e.target.checked
 
