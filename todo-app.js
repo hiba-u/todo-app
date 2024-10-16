@@ -15,7 +15,7 @@ const todos = [{
     completed: false
 }]
 
-const filters ={
+const filters = {
     searchText: ''
 }
 
@@ -45,17 +45,22 @@ const renderTodos = function(todos, filters){
     })
 }
 
-renderTodos(todos, {searchText: ''})
-
-document.querySelector('#add-todo').addEventListener('input', function(e){
-    // const todoEl = document.createElement('p')
-    // todoEl.textContent = e.target.value
-
-    // document.querySelector('#todos').appendChild(todoEl)
-})
+renderTodos(todos, filters)
 
 document.querySelector('#search-todo').addEventListener('input', function(e){
     filters.searchText = e.target.value
 
     renderTodos(todos, filters)
+})
+
+// Add todo
+document.querySelector('#todo-form').addEventListener('submit', function(e){
+    e.preventDefault()
+    
+    todoText = e.target.elements.addTodo.value
+    todos.push({text: todoText, completed: false})
+
+    renderTodos(todos, filters)
+
+    e.target.elements.addTodo.value = ''
 })
