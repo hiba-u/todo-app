@@ -2,10 +2,14 @@
 const getSavedTodos = function(){
     const todosJSON = localStorage.getItem('todos')
 
-    if(todosJSON !== null){
-        return JSON.parse(todosJSON)
-    }
-    else{
+    try{
+        if(todosJSON !== null){
+            return JSON.parse(todosJSON)
+        }
+        else{
+            return []
+        }
+    }catch(e){
         return []
     }
 }
@@ -69,7 +73,8 @@ const toggleTodo = function(id, isChecked){
 // Generate dom structure for todo
 const generateTodoDOM = function(todo){
 
-    const todoEl = document.createElement('div')
+    const todoEl = document.createElement('label')
+    const containerEl = document.createElement('div')
     const textEl = document.createElement('span')
     const chkEl = document.createElement('input')
     const btnEl = document.createElement('button')
@@ -77,7 +82,7 @@ const generateTodoDOM = function(todo){
     // Checkbox
     chkEl.setAttribute('type', 'checkbox')
     chkEl.checked = todo.completed
-    todoEl.appendChild(chkEl)
+    containerEl.appendChild(chkEl)
     chkEl.addEventListener('change', function(e){
         toggleTodo(todo.id, e.target.checked)
         saveTodos(todos)
@@ -86,24 +91,38 @@ const generateTodoDOM = function(todo){
 
     // Todo text
     textEl.textContent = todo.text
-    todoEl.appendChild(textEl)
+    containerEl.appendChild(textEl)
+
+    // Setup container
+    todoEl.classList.add('list-item')
+    containerEl.classList.add('list-item__container')
+        
+    document.querySelector('#todos').appendChild(todoEl)
+
+    todoEl.appendChild(containerEl)
 
     // Remove todo button
-    btnEl.textContent = 'X'
+    btnEl.textContent = 'Remove'
+    btnEl.classList.add('button', 'button--text')
     todoEl.appendChild(btnEl)
     btnEl.addEventListener('click', function(){
         removeTodo(todo.id)
         saveTodos(todos)
         renderTodos(todos, filters)
     })
-        
-    document.querySelector('#todos').appendChild(todoEl)
+
+    
 }
 
 // Generate the dom for summary
 const generateSummary = function(todos){
     const summary = document.createElement('h2')
-    summary.textContent = `You have ${todos.length} todos left`
+    if(todos.length == 1){
+        summary.textContent = `You have ${todos.length} todo left`
+    }else{
+        summary.textContent = `You have ${todos.length} todos left`
+    }
     
+    summary.classList.add('list-title')
     document.querySelector('#todos').appendChild(summary)
 }

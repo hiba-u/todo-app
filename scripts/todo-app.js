@@ -17,20 +17,22 @@ document.querySelector('#search-todo').addEventListener('input', function(e){
 // Add a new todo
 document.querySelector('#todo-form').addEventListener('submit', function(e){
     e.preventDefault()
+
+    todoText = e.target.elements.addTodo.value.trim()
+    if(todoText.length > 0){
+        todos.push(
+            {
+            id: uuidv4(),
+            text: todoText, 
+            completed: false
+        })
     
-    todoText = e.target.elements.addTodo.value
-    todos.push(
-        {
-        id: uuidv4(),
-        text: todoText, 
-        completed: false
-    })
-
-    saveTodos(todos)
-
-    renderTodos(todos, filters)
-
-    e.target.elements.addTodo.value = ''
+        saveTodos(todos)
+    
+        renderTodos(todos, filters)
+    
+        e.target.elements.addTodo.value = ''
+    }
 })
 
 // Hide the completed todos
